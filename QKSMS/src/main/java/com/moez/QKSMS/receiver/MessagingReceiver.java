@@ -9,10 +9,17 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.moez.QKSMS.common.BlockedConversationHelper;
 import com.moez.QKSMS.common.ConversationPrefsHelper;
+import com.moez.QKSMS.common.dbhelper.FilterDbHelper;
+import com.moez.QKSMS.common.dbhelper.GarbageDbHelper;
+import com.moez.QKSMS.common.utils.GarbageUtils;
 import com.moez.QKSMS.common.utils.PackageUtils;
+import com.moez.QKSMS.data.ContactHelper;
 import com.moez.QKSMS.data.Message;
+import com.moez.QKSMS.data.SimpleMessage;
 import com.moez.QKSMS.service.NotificationService;
 import com.moez.QKSMS.transaction.NotificationManager;
 import com.moez.QKSMS.transaction.SmsHelper;
@@ -96,6 +103,23 @@ public class MessagingReceiver extends BroadcastReceiver {
     }
 
     private void insertMessageAndNotify() {
+        // 在短信入库之前判断是否应该拦截
+        SimpleMessage simpleMessage = new SimpleMessage(mBody, mAddress, mDate);
+        FilterDbHelper filterDbHelper = new FilterDbHelper(mContext);
+        if (GarbageUtils.isGarbageMessage(filterDbHelper, simpleMessage)) {
+            GarbageDbHelper garbageDbHelper = new GarbageDbHelper(mContext);
+            garbageDbHelper.addMessage(simpleMessage);
+
+            long contactId = ContactHelper.getId(mContext, mAddress);
+            if (contactId > 0) {
+                // 这里进行提醒新垃圾信息到来
+                Toast.makeText(mContext, "新垃圾信息到来（已知号码）", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(mContext, "新垃圾信息到来（未知号码）", Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
+
         mUri = SmsHelper.addMessageToInbox(mContext, mAddress, mBody, mDate);
 
         Message message = new Message(mContext, mUri);
@@ -124,7 +148,8 @@ public class MessagingReceiver extends BroadcastReceiver {
         } else { // We shouldn't show a notification for this message
             message.markSeen();
         }
-
+        message.markGarbage();
+        Log.e(TAG, String.valueOf(message.getType()));
         if (conversationPrefs.getWakePhoneEnabled()) {
             PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
             PowerManager.WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "MessagingReceiver");
