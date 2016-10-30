@@ -38,6 +38,12 @@
             android:summary="@string/pref_category_summary_notifications"
             android:title="@string/pref_category_notifications" />
         <Preference
+            android:icon="@drawable/ic_notifications"
+            android:key="pref_key_category_garbage"
+            android:layout="@layout/list_item_preference"
+            android:summary="@string/pref_category_summary_garbage"
+            android:title="@string/pref_category_garbage" />
+        <Preference
             android:icon="@drawable/ic_photo"
             android:key="pref_key_category_mms"
             android:layout="@layout/list_item_preference"

@@ -208,6 +208,8 @@
     <string name="pref_return_summary">Show return key on keyboard instead of Emoji button</string>
     <string name="pref_text">Text</string>
 
+    <string name="pref_category_garbage">骚扰拦截</string>
+    <string name="pref_category_summary_garbage">黑名单、 白名单、 关键词</string>
     <string name="pref_notifications">SMS notifications enabled</string>
     <string name="pref_led">Notification LED</string>
     <string name="pref_theme_led">Notification LED color</string>
@@ -225,7 +227,16 @@
     <string name="pref_notification_call_summary">Call the sender of a message right from the notification</string>
     <string name="pref_dimiss_read">Mark as read</string>
     <string name="pref_dismiss_read_summary">Mark message as read when notification is cleared</string>
-
+    <string name="pref_garbage">骚扰拦截</string>
+    <string name="pref_garbage_enable">启用骚扰拦截</string>
+    <string name="pref_garbage_summary_enable">开启骚扰拦截，为你的短信保价护行</string>
+    <string name="pref_garbage_rule">拦截规则</string>
+    <string name="pref_garbage_white_list">白名单</string>
+    <string name="pref_garbage_summary_white_list">白名单里的联系人会被直接放行</string>
+    <string name="pref_garbage_black_list">黑名单</string>
+    <string name="pref_garbage_summary_black_list">不会再收到来自他们的短信</string>
+    <string name="pref_garbage_keyword">屏蔽关键词</string>
+    <string name="pref_garbage_summary_keyword">包含这些内容的短信将被拦截</string>
     <string name="pref_delayed">Delayed messaging</string>
     <string name="pref_delayed_summary">Wait before sending your messages, so you have a chance to review them</string>
     <string name="pref_delayed_duration">Delay length (seconds)</string>

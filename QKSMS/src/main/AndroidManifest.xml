@@ -107,6 +107,10 @@
             android:name=".ui.compose.ComposeActivity"
             android:screenOrientation="user"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.garbage.FilterSettingActivity"
+            android:screenOrientation="user"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity-alias
             android:name=".ui.MainActivity-Default"

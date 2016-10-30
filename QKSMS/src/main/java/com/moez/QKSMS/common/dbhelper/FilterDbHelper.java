@@ -46,6 +46,11 @@ public class FilterDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_FILTER_CREATE);
         db.execSQL("insert into filter values (null, 3, 'test')");
+        db.execSQL("insert into filter values (null, 3, '简直开心')");
+        db.execSQL("insert into filter values (null, 3, 'ohhhh~')");
+        db.execSQL("insert into filter values (null, 3, 'fuck')");
+        db.execSQL("insert into filter values (null, 3, '1[0-9]{10}')");
+        db.execSQL("insert into filter values (null, 1, '15988176940')");
     }
 
     @Override
@@ -77,8 +82,9 @@ public class FilterDbHelper extends SQLiteOpenHelper {
     public ArrayList<String> getList(int type) {
         ArrayList<String> result = new ArrayList<>();
 
-        SQLiteDatabase db = getDatabase();
-        Cursor cursor= db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_FILTER_TYPE + "=?", new String[]{String.valueOf(type)});
+//        SQLiteDatabase db = getDatabase();
+//        Cursor cursor= db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_FILTER_TYPE + "=?", new String[]{String.valueOf(type)});
+        Cursor cursor = getCursorByFilterType(type);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -88,5 +94,10 @@ public class FilterDbHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return result;
+    }
+
+    public Cursor getCursorByFilterType(int type) {
+        SQLiteDatabase db = getDatabase();
+        return db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_FILTER_TYPE + "=?", new String[]{String.valueOf(type)});
     }
 }

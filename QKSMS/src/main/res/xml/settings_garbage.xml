@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:layout="@layout/list_item_preference_category"
+        android:title="@string/pref_garbage">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_key_garbage"
+            android:layout="@layout/list_item_preference"
+            android:title="@string/pref_garbage_enable"
+            android:summary="@string/pref_garbage_summary_enable"
+            android:widgetLayout="@layout/view_switch" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout="@layout/list_item_preference_category"
+        android:title="@string/pref_garbage_rule"
+        android:dependency="pref_key_garbage">
+        <Preference
+            android:key="pref_key_white_list"
+            android:layout="@layout/list_item_preference"
+            android:summary="@string/pref_garbage_summary_white_list"
+            android:title="@string/pref_garbage_white_list"/>
+        <Preference
+            android:key="pref_key_black_list"
+            android:layout="@layout/list_item_preference"
+            android:summary="@string/pref_garbage_summary_black_list"
+            android:title="@string/pref_garbage_black_list"/>
+        <Preference
+            android:key="pref_key_keyword"
+            android:layout="@layout/list_item_preference"
+            android:summary="@string/pref_garbage_summary_keyword"
+            android:title="@string/pref_garbage_keyword"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

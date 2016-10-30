@@ -36,6 +36,7 @@ import com.moez.QKSMS.common.DonationManager;
 import com.moez.QKSMS.common.ListviewHelper;
 import com.moez.QKSMS.common.LiveViewManager;
 import com.moez.QKSMS.common.QKPreferences;
+import com.moez.QKSMS.common.dbhelper.FilterDbHelper;
 import com.moez.QKSMS.common.utils.DateFormatter;
 import com.moez.QKSMS.common.utils.KeyboardUtils;
 import com.moez.QKSMS.common.utils.PackageUtils;
@@ -45,12 +46,14 @@ import com.moez.QKSMS.service.DeleteOldMessagesService;
 import com.moez.QKSMS.transaction.EndlessJabber;
 import com.moez.QKSMS.transaction.NotificationManager;
 import com.moez.QKSMS.transaction.SmsHelper;
+import com.moez.QKSMS.ui.MainActivity;
 import com.moez.QKSMS.ui.ThemeManager;
 import com.moez.QKSMS.ui.base.QKActivity;
 import com.moez.QKSMS.ui.dialog.BlockedNumberDialog;
 import com.moez.QKSMS.ui.dialog.BubblePreferenceDialog;
 import com.moez.QKSMS.ui.dialog.QKDialog;
 import com.moez.QKSMS.ui.dialog.mms.MMSSetupFragment;
+import com.moez.QKSMS.ui.garbage.FilterSettingActivity;
 import com.moez.QKSMS.ui.view.QKTextView;
 import com.moez.QKSMS.ui.view.colorpicker.ColorPickerDialog;
 import com.moez.QKSMS.ui.view.colorpicker.ColorPickerSwatch;
@@ -73,6 +76,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public static final String CATEGORY_THEME = "pref_category_theme";
     public static final String CATEGORY_GENERAL = "pref_key_category_general";
     public static final String CATEGORY_NOTIFICATIONS = "pref_key_category_notifications";
+    public static final String CATEGORY_GARBAGE = "pref_key_category_garbage";
     public static final String CATEGORY_MMS = "pref_key_category_mms";
     public static final String CATEGORY_QUICKREPLY = "pref_key_category_quickreply";
     public static final String CATEGORY_QUICKCOMPOSE = "pref_key_category_quickcompose";
@@ -156,6 +160,10 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public static final String GOOGLE_PLUS = "pref_key_google_plus";
     public static final String GITHUB = "pref_key_github";
     public static final String CROWDIN = "pref_key_crowdin";
+    public static final String WHITE_LIST = "pref_key_white_list";
+    public static final String BLACK_LIST = "pref_key_black_list";
+    public static final String KEYWORD = "pref_key_keyword";
+
 
     public static final String WELCOME_SEEN = "pref_key_welcome_seen";
 
@@ -550,6 +558,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             case CATEGORY_NOTIFICATIONS:
                 resId = R.xml.settings_notifications;
                 break;
+            case CATEGORY_GARBAGE:
+                resId = R.xml.settings_garbage;
+                break;
             case CATEGORY_MMS:
                 resId = R.xml.settings_mms;
                 break;
@@ -668,9 +679,24 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             case CROWDIN:
                 startBrowserIntent(CROWDIN_URL);
                 break;
+            case WHITE_LIST:
+                startFilterSettingActivity(FilterDbHelper.TYPE_WHITE_LIST);
+                break;
+            case BLACK_LIST:
+                startFilterSettingActivity(FilterDbHelper.TYPE_BLACK_LIST);
+                break;
+            case KEYWORD:
+                startFilterSettingActivity(FilterDbHelper.TYPE_KEYWORD);
+                break;
         }
 
         return false;
+    }
+
+    private void startFilterSettingActivity(int filterType) {
+        Intent intent = new Intent(mContext, FilterSettingActivity.class);
+        intent.putExtra("filterType", filterType);
+        startActivity(intent);
     }
 
     private void startBrowserIntent(final String baseUrl) {

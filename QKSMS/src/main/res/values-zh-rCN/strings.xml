@@ -109,6 +109,8 @@
   <string name="pref_category_blocking">Message blocking</string>
   <string name="pref_category_notifications">通知</string>
   <string name="pref_category_summary_notifications">声音、 LED灯、 隐私</string>
+  <string name="pref_category_garbage">骚扰拦截</string>
+  <string name="pref_category_summary_garbage">黑名单、 白名单、 关键词</string>
   <string name="pref_category_mms">彩信</string>
   <string name="pref_category_summary_mms">配置 MMS （Apn）、 最大尺寸、 群组消息</string>
   <string name="pref_category_quickreply">快速回复</string>
@@ -217,6 +219,16 @@
   <string name="pref_notification_call_summary">从通知中直接呼叫信息的发件人</string>
   <string name="pref_dimiss_read">Mark as read</string>
   <string name="pref_dismiss_read_summary">Mark message as read when notification is cleared</string>
+  <string name="pref_garbage">骚扰拦截</string>
+  <string name="pref_garbage_enable">启用骚扰拦截</string>
+  <string name="pref_garbage_summary_enable">开启骚扰拦截，为你的短信保价护行</string>
+  <string name="pref_garbage_rule">拦截规则</string>
+  <string name="pref_garbage_white_list">白名单</string>
+  <string name="pref_garbage_summary_white_list">白名单里的联系人会被直接放行</string>
+  <string name="pref_garbage_black_list">黑名单</string>
+  <string name="pref_garbage_summary_black_list">不会再收到来自他们的短信</string>
+  <string name="pref_garbage_keyword">屏蔽关键词</string>
+  <string name="pref_garbage_summary_keyword">包含这些内容的短信将被拦截</string>
   <string name="pref_delayed">延迟消息</string>
   <string name="pref_delayed_summary">Wait before sending your messages, so you have a chance to review them</string>
   <string name="pref_delayed_duration">延迟时间 (秒)</string>
