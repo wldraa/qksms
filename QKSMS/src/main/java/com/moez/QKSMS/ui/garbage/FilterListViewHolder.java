@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.moez.QKSMS.R;
+import com.moez.QKSMS.data.Filter;
 import com.moez.QKSMS.ui.base.ClickyViewHolder;
 import com.moez.QKSMS.ui.base.QKActivity;
 

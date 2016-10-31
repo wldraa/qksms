@@ -1,13 +1,18 @@
 package com.moez.QKSMS.ui.garbage;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.moez.QKSMS.R;
 import com.moez.QKSMS.common.dbhelper.FilterDbHelper;
+import com.moez.QKSMS.data.Filter;
+import com.moez.QKSMS.ui.base.ClickyViewHolder;
 import com.moez.QKSMS.ui.base.QKActivity;
 import com.moez.QKSMS.ui.base.RecyclerCursorAdapter;
+
+import java.util.HashMap;
 
 /**
  * Created by zhangqian on 2016/10/30.
@@ -18,9 +23,7 @@ public class FilterListAdapter extends RecyclerCursorAdapter<FilterListViewHolde
 
     private int mFilterType = FilterDbHelper.TYPE_WHITE_LIST;
 
-    public FilterListAdapter(QKActivity activity) {
-        super(activity);
-    }
+    private RecyclerCursorAdapter.ItemClickListener<Filter> mItemClickListener;
 
     public FilterListAdapter(QKActivity activity, int type) {
         super(activity);
@@ -30,17 +33,18 @@ public class FilterListAdapter extends RecyclerCursorAdapter<FilterListViewHolde
     @Override
     protected Filter getItem(int position) {
         mCursor.moveToPosition(position);
-        return new Filter(mCursor.getString(mCursor.getColumnIndex(FilterDbHelper.COLUMN_CONTENT)));
+        Filter filter = new Filter();
+        filter.setId(mCursor.getInt(mCursor.getColumnIndex(FilterDbHelper.COLUMN_ID)));
+        filter.setFilterType(mCursor.getInt(mCursor.getColumnIndex(FilterDbHelper.COLUMN_FILTER_TYPE)));
+        filter.setName(mCursor.getString(mCursor.getColumnIndex(FilterDbHelper.COLUMN_CONTENT)));
+        return filter;
     }
 
     @Override
     public FilterListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.list_item_filter, null);
-
-        FilterListViewHolder viewHolder = new FilterListViewHolder(mContext, view);
-
-        return viewHolder;
+        return new FilterListViewHolder(mContext, view);
     }
 
     @Override
@@ -48,9 +52,17 @@ public class FilterListAdapter extends RecyclerCursorAdapter<FilterListViewHolde
         Filter filter = getItem(position);
 
         holder.filterName.setText(filter.getName());
+        holder.mData = filter;
+        holder.mContext = mContext;
+        holder.mClickListener = mItemClickListener;
+        holder.filterDelete.setOnClickListener(holder);
     }
 
     public void setFilterType(int type) {
         mFilterType = type;
+    }
+
+    public void setItemClickListener(ItemClickListener<Filter> i) {
+        mItemClickListener = i;
     }
 }

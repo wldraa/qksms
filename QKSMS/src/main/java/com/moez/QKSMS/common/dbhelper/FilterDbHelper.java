@@ -1,9 +1,12 @@
 package com.moez.QKSMS.common.dbhelper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.moez.QKSMS.data.Filter;
 
 import java.util.ArrayList;
 
@@ -45,12 +48,6 @@ public class FilterDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_FILTER_CREATE);
-        db.execSQL("insert into filter values (null, 3, 'test')");
-        db.execSQL("insert into filter values (null, 3, '简直开心')");
-        db.execSQL("insert into filter values (null, 3, 'ohhhh~')");
-        db.execSQL("insert into filter values (null, 3, 'fuck')");
-        db.execSQL("insert into filter values (null, 3, '1[0-9]{10}')");
-        db.execSQL("insert into filter values (null, 1, '15988176940')");
     }
 
     @Override
@@ -81,9 +78,6 @@ public class FilterDbHelper extends SQLiteOpenHelper {
 
     public ArrayList<String> getList(int type) {
         ArrayList<String> result = new ArrayList<>();
-
-//        SQLiteDatabase db = getDatabase();
-//        Cursor cursor= db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_FILTER_TYPE + "=?", new String[]{String.valueOf(type)});
         Cursor cursor = getCursorByFilterType(type);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -99,5 +93,29 @@ public class FilterDbHelper extends SQLiteOpenHelper {
     public Cursor getCursorByFilterType(int type) {
         SQLiteDatabase db = getDatabase();
         return db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_FILTER_TYPE + "=?", new String[]{String.valueOf(type)});
+    }
+
+    public void addFilter(String name, int type) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_CONTENT, name);
+        cv.put(COLUMN_FILTER_TYPE, type);
+        SQLiteDatabase db = getDatabase();
+        db.insert(TABLE_NAME, COLUMN_ID, cv);
+    }
+
+    public void addFilter(Filter filter) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_CONTENT, filter.getName());
+        cv.put(COLUMN_FILTER_TYPE, filter.getFilterType());
+        if (filter.getId() > 0) {
+            cv.put(COLUMN_ID, filter.getId());
+        }
+        SQLiteDatabase db = getDatabase();
+        db.insert(TABLE_NAME, COLUMN_ID, cv);
+    }
+
+    public void removeFilter(Filter filter) {
+        SQLiteDatabase db = getDatabase();
+        db.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(filter.getId())});
     }
 }
