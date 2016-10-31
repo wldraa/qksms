@@ -62,6 +62,8 @@
   <string name="menu_settings">设置</string>
   <!--Search option in menu-->
   <string name="menu_search">搜索</string>
+  <!--Search option in menu-->
+  <string name="menu_clear">清空垃圾短信</string>
   <!--Show full conversation in QuickReply-->
   <string name="menu_show_all">显示所有信息</string>
   <!--Show only unread messages in QuickReply-->
@@ -175,6 +177,8 @@
   <string name="pref_endlessjabber_summary">启用对Yappy的完整支持</string>
   <string name="pref_blocked_conversations">Blocked conversations</string>
   <string name="pref_blocked_conversations_summary">Long-press on a conversation and block to move to blocked inbox and stop notifications</string>
+  <string name="pref_blocked_messages">垃圾箱</string>
+  <string name="pref_blocked_messages_summary">这里是 pref_blocked_messages_summary 的内容</string>
   <string name="pref_block_future">Block future messages</string>
   <string name="pref_block_future_summary">Add additional phone numbers to block</string>
   <string name="pref_should_i_answer">Should I Answer? Integration</string>
@@ -318,6 +322,11 @@
   <string name="title_conversations_selected">已选择 %s</string>
   <string name="title_palette">Palette</string>
   <string name="title_rgb">RGB</string>
+  <!-- garbage -->
+  <string name="restore_inbox">恢复到收件箱</string>
+  <string name="mark_black">加入黑名单</string>
+  <string name="mark_white">加入白名单</string>
+
   <!-- Menu shown in the context menu when long pressing on a message when the message contains
          one or more phone numbers and/or email addresses and the number or email is new to
          contacts. [CHAR LIMIT=50] -->

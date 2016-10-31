@@ -65,6 +65,8 @@
     <string name="menu_settings">Settings</string>
     <!--Search option in menu-->
     <string name="menu_search">Search</string>
+    <!--clear all garbage messages-->
+    <string name="menu_clear">clear all</string>
     <!--Show full conversation in QuickReply-->
     <string name="menu_show_all">Show all messages</string>
     <!--Show only unread messages in QuickReply-->
@@ -179,6 +181,7 @@
     <string name="pref_yappy">Yappy integration</string>
     <string name="pref_endlessjabber_summary">Enable full support for Yappy</string>
     <string name="pref_blocked_conversations">Blocked conversations</string>
+    <string name="pref_blocked_messages">Blocked messages</string>
     <string name="pref_blocked_conversations_summary">Long-press on a conversation and block to move to blocked inbox and stop notifications</string>
     <string name="pref_block_future">Block future messages</string>
     <string name="pref_block_future_summary">Add additional phone numbers to block</string>

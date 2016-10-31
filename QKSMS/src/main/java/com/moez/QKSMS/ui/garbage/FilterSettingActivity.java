@@ -15,7 +15,7 @@ import com.moez.QKSMS.ui.base.QKActivity;
  * 设置黑白名单，关键词
  */
 public class FilterSettingActivity extends QKActivity {
-    final private static String TAG = "FilterSettingActivity";
+    final public static String TAG = "FilterSettingActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

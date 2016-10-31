@@ -17,6 +17,10 @@
         android:visible="false" />
 
     <item
+        android:id="@+id/menu_blocked_message"
+        android:title="@string/pref_blocked_messages" />
+
+    <item
         android:id="@+id/menu_changelog"
         android:title="@string/menu_changelog" />
 

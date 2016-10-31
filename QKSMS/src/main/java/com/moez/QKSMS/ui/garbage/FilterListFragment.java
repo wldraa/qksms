@@ -3,6 +3,7 @@ package com.moez.QKSMS.ui.garbage;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +82,6 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
     public void onClick(View v) {
         if (v == mFilterAdd) {
             mEditText = new EditText(mContext);
-
-            mEditText.setPadding(50, 0, 50, 0);
             new QKDialog()
                     .setContext(mContext)
                     .setTitle("添加")

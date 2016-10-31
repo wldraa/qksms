@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <com.moez.QKSMS.ui.view.QKTextView
+            android:id="@+id/address"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content" />
+
+        <com.moez.QKSMS.ui.view.QKTextView
+            android:id="@+id/dateSend"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"/>
+
+    </LinearLayout>
+
+    <com.moez.QKSMS.ui.view.QKTextView
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/restore"
+            android:text="@string/restore_inbox"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle" />
+        <Button
+            android:id="@+id/markBlack"
+            android:text="@string/mark_black"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle"  />
+        <Button
+            android:layout_width="100dp"
+            android:text="@string/mark_white"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle"  />
+
+    </LinearLayout>
+</LinearLayout>

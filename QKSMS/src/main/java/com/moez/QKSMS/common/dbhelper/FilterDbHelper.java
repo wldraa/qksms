@@ -14,12 +14,10 @@ import java.util.ArrayList;
  * Created by zhangqian on 2016/10/29.
  * get and set filter
  */
-public class FilterDbHelper extends SQLiteOpenHelper {
-
-    public static final String DB_NAME = "filter.db";
-    public static final int DB_VERSION = 1;
+public class FilterDbHelper extends BaseDbHelper {
 
     public static final String TABLE_NAME = "filter";
+
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_FILTER_TYPE = "filter_type";
     public static final String COLUMN_CONTENT = "content";
@@ -28,38 +26,8 @@ public class FilterDbHelper extends SQLiteOpenHelper {
     public static final int TYPE_BLACK_LIST = 2;
     public static final int TYPE_KEYWORD = 3;
 
-
-    private SQLiteDatabase mDatabase;
-
-    public static final String SQL_FILTER_CREATE = "create table filter (" +
-            "id integer primary key autoincrement," +
-            "filter_type integer not null default 1," +
-            "content varchar(100) not null default ''" +
-            ")";
-
-
-    protected Context mContext;
-
     public FilterDbHelper(Context mContext) {
-        super(mContext, DB_NAME, null, DB_VERSION);
-        this.mContext = mContext;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_FILTER_CREATE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
-    public SQLiteDatabase getDatabase() {
-        if (mDatabase == null) {
-            mDatabase = this.getWritableDatabase();
-        }
-        return mDatabase;
+        super(mContext);
     }
 
     public ArrayList<String> getWhiteList() {

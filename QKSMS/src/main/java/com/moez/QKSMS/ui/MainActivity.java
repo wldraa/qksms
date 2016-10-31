@@ -43,6 +43,7 @@ import com.moez.QKSMS.ui.conversationlist.ConversationListFragment;
 import com.moez.QKSMS.ui.dialog.DefaultSmsHelper;
 import com.moez.QKSMS.ui.dialog.QKDialog;
 import com.moez.QKSMS.ui.dialog.mms.MMSSetupFragment;
+import com.moez.QKSMS.ui.garbage.GarbageActivity;
 import com.moez.QKSMS.ui.messagelist.MessageListActivity;
 import com.moez.QKSMS.ui.search.SearchActivity;
 import com.moez.QKSMS.ui.settings.SettingsFragment;
@@ -179,6 +180,9 @@ public class MainActivity extends QKActivity {
                 return true;
             case R.id.menu_search:
                 startActivity(SearchActivity.class);
+                return true;
+            case R.id.menu_blocked_message:
+                startActivity(GarbageActivity.class);
                 return true;
         }
 

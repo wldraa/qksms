@@ -111,6 +111,10 @@
             android:name=".ui.garbage.FilterSettingActivity"
             android:screenOrientation="user"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.garbage.GarbageActivity"
+            android:screenOrientation="user"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity-alias
             android:name=".ui.MainActivity-Default"
