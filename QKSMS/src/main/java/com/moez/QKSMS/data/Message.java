@@ -187,31 +187,4 @@ public class Message {
         }
     }
 
-    public void markGarbage() {
-        ContentValues cv = new ContentValues();
-        cv.put("type", 9);
-
-        if (isMms()) {
-            context.getContentResolver().update(Uri.parse("content://mms/" + getId()), cv, null, null);
-        } else {
-            context.getContentResolver().update(Uri.parse("content://sms/" + getId()), cv, null, null);
-        }
-    }
-
-    public int getType() {
-        int type = 0;
-        Cursor cursor = null;
-        try {
-            cursor = context.getContentResolver().query(SMS_CONTENT_PROVIDER, new String[]{SmsHelper.COLUMN_TYPE}, "_id=" + id, null, null);
-            cursor.moveToFirst();
-            type = cursor.getInt(cursor.getColumnIndexOrThrow(SmsHelper.COLUMN_TYPE));
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return type;
-    }
 }

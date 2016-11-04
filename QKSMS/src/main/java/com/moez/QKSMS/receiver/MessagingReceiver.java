@@ -148,8 +148,7 @@ public class MessagingReceiver extends BroadcastReceiver {
         } else { // We shouldn't show a notification for this message
             message.markSeen();
         }
-        message.markGarbage();
-        Log.e(TAG, String.valueOf(message.getType()));
+
         if (conversationPrefs.getWakePhoneEnabled()) {
             PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
             PowerManager.WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "MessagingReceiver");

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import com.moez.QKSMS.R;
 import com.moez.QKSMS.common.dbhelper.GarbageDbHelper;
 import com.moez.QKSMS.common.utils.DateFormatter;
-import com.moez.QKSMS.data.SimpleMessage;
 import com.moez.QKSMS.ui.base.QKActivity;
 import com.moez.QKSMS.ui.base.RecyclerCursorAdapter;
 
@@ -17,7 +16,8 @@ import java.util.Date;
  * Created by zhangqian on 2016/10/31.
  *
  */
-public class GarbageAdapter extends RecyclerCursorAdapter<GarbageViewHolder, SimpleMessage> {
+public class GarbageAdapter extends RecyclerCursorAdapter<GarbageViewHolder, GarbageAdapter.SimpleMessage> {
+    public static final String TAG = "GarbageAdapter";
 
     public GarbageAdapter(QKActivity context) {
         super(context);
@@ -45,9 +45,30 @@ public class GarbageAdapter extends RecyclerCursorAdapter<GarbageViewHolder, Sim
     public void onBindViewHolder(GarbageViewHolder holder, int position) {
         SimpleMessage message = getItem(position);
 
+        holder.mData = message;
         holder.address.setText(message.getAddress());
         holder.dateSend.setText(DateFormatter.getConversationTimestamp(mContext, message.getDateSend()));
         holder.body.setText(message.getBody());
 
+        holder.mClickListener = mItemClickListener;
+        holder.root.setOnClickListener(holder);
+        holder.markBlack.setOnClickListener(holder);
+        holder.restore.setOnClickListener(holder);
+        holder.markWhite.setOnClickListener(holder);
+
+        if (message.getVisible()) {
+            holder.body.setMaxLines(10);
+            holder.buttons.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public class SimpleMessage extends com.moez.QKSMS.data.SimpleMessage {
+        private boolean visible = false;
+        public boolean getVisible() {
+            return visible;
+        }
+        public void setVisible(boolean v) {
+            visible = v;
+        }
     }
 }
