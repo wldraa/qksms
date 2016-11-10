@@ -18,6 +18,7 @@ public class BaseDbHelper extends SQLiteOpenHelper {
     public static final String SQL_FILTER_CREATE = "create table filter (" +
             "id integer primary key autoincrement," +
             "filter_type integer not null default 1," +
+            "name varchar(100) not null default ''," +
             "content varchar(100) not null default ''" +
             ")";
 
@@ -40,12 +41,6 @@ public class BaseDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_FILTER_CREATE);
         db.execSQL(SQL_GARBAGE_CREATE);
-//        db.execSQL("insert into garbage values(null, '1066164125', '广告来了', '1477897443111')");
-//        db.execSQL("insert into garbage values(null, '4001212345', '这是一条很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很很长的广告', '1477897443111')");
-//        db.execSQL("insert into garbage values(null, '17325637854', '', '1477897443111')");
-//        db.execSQL("insert into garbage values(null, '4564645631', '【xx科技】难码123131', '1477897443111')");
-//        db.execSQL("insert into garbage values(null, '106902608403503', '231434235432521423143张三', '1477897443111')");
-//        db.execSQL("insert into garbage values(null, '106902608403503', '这是一条很普通的广告', '1477897443111')");
     }
 
     @Override

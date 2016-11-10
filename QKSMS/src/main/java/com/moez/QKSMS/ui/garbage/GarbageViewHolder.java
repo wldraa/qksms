@@ -30,7 +30,7 @@ public class GarbageViewHolder extends ClickyViewHolder<GarbageAdapter.SimpleMes
     public GarbageViewHolder(QKActivity context, View itemView) {
         super(context, itemView);
 
-        root = (LinearLayout) itemView;
+        root = (LinearLayout) itemView.findViewById(R.id.garbage_root);
         address = (QKTextView) itemView.findViewById(R.id.address);
         dateSend = (QKTextView) itemView.findViewById(R.id.dateSend);
         body = (QKTextView) itemView.findViewById(R.id.body);

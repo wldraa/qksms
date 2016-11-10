@@ -21,6 +21,8 @@ import butterknife.Bind;
 public class GarbageActivity extends QKActivity {
     public static final String TAG = "GarbageActivity";
 
+    private GarbageFragment mGarbageFragment;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +30,12 @@ public class GarbageActivity extends QKActivity {
         setContentView(R.layout.activity_garbage);
         FragmentManager fm = getFragmentManager();
 
-        GarbageFragment garbageFragment = (GarbageFragment) fm.findFragmentByTag(GarbageActivity.TAG);
-        if (null == garbageFragment) {
-            garbageFragment = new GarbageFragment();
+        mGarbageFragment = (GarbageFragment) fm.findFragmentByTag(GarbageActivity.TAG);
+        if (null == mGarbageFragment) {
+            mGarbageFragment = new GarbageFragment();
         }
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.body_fragment, garbageFragment, GarbageActivity.TAG);
+        ft.replace(R.id.body_fragment, mGarbageFragment, GarbageActivity.TAG);
         ft.commit();
 
     }
@@ -44,7 +46,7 @@ public class GarbageActivity extends QKActivity {
         menu.clear();
         inflater.inflate(R.menu.garbage, menu);
         setTitle(R.string.pref_garbage);
-        showBackButton(true);
+        showBackButton(false);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -55,6 +57,7 @@ public class GarbageActivity extends QKActivity {
                 onBackPressed();
                 return true;
             case R.id.menu_clear:
+                mGarbageFragment.clearGarbage();
                 Toast.makeText(this, "清空所有", Toast.LENGTH_SHORT).show();
                 return true;
         }

@@ -59,6 +59,15 @@ public class GarbageFragment extends QKFragment implements RecyclerCursorAdapter
         return view;
     }
 
+    private void refreshList() {
+        mAdapter.changeCursor(mGarbageDbHelper.getAllMessageCursor());
+    }
+
+    public void clearGarbage() {
+        mGarbageDbHelper.clearMessage();
+        refreshList();
+    }
+
     @Override
     public void onItemClick(GarbageAdapter.SimpleMessage message, View view) {
         switch (view.getId()) {
@@ -80,15 +89,15 @@ public class GarbageFragment extends QKFragment implements RecyclerCursorAdapter
             case R.id.markWhite:
                 mFilterDbHelper.addFilter(message.getAddress(), FilterDbHelper.TYPE_WHITE_LIST);
                 mGarbageDbHelper.removeMessage(message);
-                mAdapter.changeCursor(mGarbageDbHelper.getAllMessageCursor());
+                refreshList();
                 SmsHelper.addMessageToInbox(mContext, message.getAddress(), message.getBody(), message.getDateSend());
-                Toast.makeText(mContext, "you click restore button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "加入白名单成功", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.restore:
                 mGarbageDbHelper.removeMessage(message);
-                mAdapter.changeCursor(mGarbageDbHelper.getAllMessageCursor());
+                refreshList();
                 SmsHelper.addMessageToInbox(mContext, message.getAddress(), message.getBody(), message.getDateSend());
-                Toast.makeText(mContext, "you click restore button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "恢复到收件箱成功", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 Toast.makeText(mContext, "I don't know what you are clicking", Toast.LENGTH_SHORT).show();

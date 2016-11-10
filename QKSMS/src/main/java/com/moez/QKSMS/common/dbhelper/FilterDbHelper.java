@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.moez.QKSMS.common.utils.GarbageUtils;
 import com.moez.QKSMS.data.Filter;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class FilterDbHelper extends BaseDbHelper {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_FILTER_TYPE = "filter_type";
+    public static final String COLUMN_NAME = "name";
     public static final String COLUMN_CONTENT = "content";
 
     public static final int TYPE_WHITE_LIST = 1;
@@ -64,22 +66,20 @@ public class FilterDbHelper extends BaseDbHelper {
     }
 
     public void addFilter(String name, int type) {
+        addFilter(name, type, GarbageUtils.CONTENT_PLAIN);
+    }
+
+    public void addFilter(String name, int type, int contentType) {
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_CONTENT, name);
+        cv.put(COLUMN_NAME, name);
+        cv.put(COLUMN_CONTENT, GarbageUtils.complieFilter(name, contentType));
         cv.put(COLUMN_FILTER_TYPE, type);
         SQLiteDatabase db = getDatabase();
         db.insert(TABLE_NAME, COLUMN_ID, cv);
     }
 
     public void addFilter(Filter filter) {
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_CONTENT, filter.getName());
-        cv.put(COLUMN_FILTER_TYPE, filter.getFilterType());
-        if (filter.getId() > 0) {
-            cv.put(COLUMN_ID, filter.getId());
-        }
-        SQLiteDatabase db = getDatabase();
-        db.insert(TABLE_NAME, COLUMN_ID, cv);
+        addFilter(filter.getName(), filter.getFilterType());
     }
 
     public void removeFilter(Filter filter) {

@@ -42,11 +42,16 @@ public class GarbageDbHelper extends BaseDbHelper {
 
     public Cursor getAllMessageCursor() {
         SQLiteDatabase db = getDatabase();
-        return db.rawQuery("select * from " + TABLE_NAME, null);
+        return db.rawQuery("select * from " + TABLE_NAME + " order by id desc", null);
     }
 
     public void removeMessage(SimpleMessage message) {
         SQLiteDatabase db = getDatabase();
         db.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(message.getId())});
+    }
+
+    public void clearMessage() {
+        SQLiteDatabase db = getDatabase();
+        db.delete(TABLE_NAME, "", null);
     }
 }

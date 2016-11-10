@@ -1,5 +1,6 @@
 package com.moez.QKSMS.receiver;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +8,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v7.app.NotificationCompat;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.moez.QKSMS.R;
 import com.moez.QKSMS.common.BlockedConversationHelper;
 import com.moez.QKSMS.common.ConversationPrefsHelper;
 import com.moez.QKSMS.common.dbhelper.FilterDbHelper;
@@ -23,6 +26,7 @@ import com.moez.QKSMS.data.SimpleMessage;
 import com.moez.QKSMS.service.NotificationService;
 import com.moez.QKSMS.transaction.NotificationManager;
 import com.moez.QKSMS.transaction.SmsHelper;
+import com.moez.QKSMS.ui.garbage.GarbageActivity;
 import com.moez.QKSMS.ui.settings.SettingsFragment;
 import org.mistergroup.muzutozvednout.ShouldIAnswerBinder;
 
@@ -113,7 +117,16 @@ public class MessagingReceiver extends BroadcastReceiver {
             long contactId = ContactHelper.getId(mContext, mAddress);
             if (contactId > 0) {
                 // 这里进行提醒新垃圾信息到来
-                Toast.makeText(mContext, "新垃圾信息到来（已知号码）", Toast.LENGTH_LONG).show();
+                android.app.NotificationManager notificationManager = (android.app.NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+                builder.setContentTitle("QKSMS");
+                builder.setContentText("收到通讯录垃圾信息");
+                builder.setSmallIcon(R.mipmap.ic_launcher);
+                builder.setAutoCancel(true);
+                Intent intent = new Intent(mContext, GarbageActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+                builder.setContentIntent(pendingIntent);
+                notificationManager.notify(0, builder.build());
             } else {
                 Toast.makeText(mContext, "新垃圾信息到来（未知号码）", Toast.LENGTH_LONG).show();
             }

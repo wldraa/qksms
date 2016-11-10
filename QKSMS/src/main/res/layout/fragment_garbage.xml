@@ -13,6 +13,7 @@
         android:divider="@null"
         android:paddingBottom="8sp"
         android:paddingTop="8sp"
-        android:scrollbarStyle="outsideOverlay" />
+        android:scrollbarStyle="outsideOverlay"
+        android:background="?android:attr/selectableItemBackground" />
 
 </LinearLayout>

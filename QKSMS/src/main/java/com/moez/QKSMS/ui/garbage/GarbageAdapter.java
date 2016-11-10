@@ -5,8 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.moez.QKSMS.R;
+import com.moez.QKSMS.common.LiveViewManager;
 import com.moez.QKSMS.common.dbhelper.GarbageDbHelper;
 import com.moez.QKSMS.common.utils.DateFormatter;
+import com.moez.QKSMS.enums.QKPreference;
+import com.moez.QKSMS.ui.ThemeManager;
 import com.moez.QKSMS.ui.base.QKActivity;
 import com.moez.QKSMS.ui.base.RecyclerCursorAdapter;
 
@@ -37,8 +40,13 @@ public class GarbageAdapter extends RecyclerCursorAdapter<GarbageViewHolder, Gar
     @Override
     public GarbageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.list_item_garbage, null);
-        return new GarbageViewHolder(mContext, view);
+        View view = inflater.inflate(R.layout.list_item_garbage, parent, false);
+
+        GarbageViewHolder holder = new GarbageViewHolder(mContext, view);
+        LiveViewManager.registerView(QKPreference.BACKGROUND, this, key -> {
+            holder.root.setBackgroundDrawable(ThemeManager.getRippleBackground());
+        });
+        return holder;
     }
 
     @Override
@@ -47,6 +55,7 @@ public class GarbageAdapter extends RecyclerCursorAdapter<GarbageViewHolder, Gar
 
         holder.mData = message;
         holder.address.setText(message.getAddress());
+//        holder.address.setTextSize(20);
         holder.dateSend.setText(DateFormatter.getConversationTimestamp(mContext, message.getDateSend()));
         holder.body.setText(message.getBody());
 

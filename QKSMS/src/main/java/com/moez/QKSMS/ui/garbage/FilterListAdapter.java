@@ -36,7 +36,7 @@ public class FilterListAdapter extends RecyclerCursorAdapter<FilterListViewHolde
         Filter filter = new Filter();
         filter.setId(mCursor.getInt(mCursor.getColumnIndex(FilterDbHelper.COLUMN_ID)));
         filter.setFilterType(mCursor.getInt(mCursor.getColumnIndex(FilterDbHelper.COLUMN_FILTER_TYPE)));
-        filter.setName(mCursor.getString(mCursor.getColumnIndex(FilterDbHelper.COLUMN_CONTENT)));
+        filter.setName(mCursor.getString(mCursor.getColumnIndex(FilterDbHelper.COLUMN_NAME)));
         return filter;
     }
 
