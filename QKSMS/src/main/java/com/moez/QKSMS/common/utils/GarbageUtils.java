@@ -1,6 +1,8 @@
 package com.moez.QKSMS.common.utils;
 
 
+import android.util.Log;
+
 import com.moez.QKSMS.common.dbhelper.FilterDbHelper;
 import com.moez.QKSMS.data.SimpleMessage;
 
@@ -30,17 +32,27 @@ public class GarbageUtils {
 
     public static boolean hasMatch(ArrayList<String> needles, String subject) {
         for (String needle : needles) {
-            Pattern pattern = Pattern.compile(needle);
-            Matcher matcher = pattern.matcher(subject);
-            if (matcher.find()) {
-                return true;
+            try {
+                Pattern pattern = Pattern.compile(needle);
+                Matcher matcher = pattern.matcher(subject);
+                if (matcher.find()) {
+                    Log.i(TAG, "try " + needle + " on " + subject + " success");
+                    return true;
+                }
+                Log.i(TAG, "try " + needle + " on " + subject + " failure");
+            } catch (Exception e) {
+                Log.e(TAG, "a filter content \"" + needle + "\" cannot be compiled.");
+                e.printStackTrace();
             }
         }
         return false;
     }
 
-    public static String complieFilter(String filter, int contentType) {
+    public static String compileFilter(String filter, int filterType, int contentType) {
         String result = filter;
+        if (filterType == FilterDbHelper.TYPE_BLACK_LIST || filterType == FilterDbHelper.TYPE_WHITE_LIST) {
+            result = result.replace(" ", "");
+        }
         switch (contentType) {
             case CONTENT_PLAIN:
                 for (char regex : REGEX_CHARS) {

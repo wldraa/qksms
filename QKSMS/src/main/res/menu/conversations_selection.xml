@@ -24,6 +24,14 @@
         android:title="@string/menu_delete_failed" />
 
     <item
+        android:id="@+id/menu_mark_black"
+        android:title="@string/menu_mark_black" />
+
+    <item
+        android:id="@+id/menu_mark_white"
+        android:title="@string/menu_mark_white" />
+
+    <item
         android:id="@+id/menu_done"
         android:title="@string/menu_done" />
 </menu>

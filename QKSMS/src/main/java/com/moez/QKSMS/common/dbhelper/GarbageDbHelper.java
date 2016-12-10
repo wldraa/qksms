@@ -27,15 +27,16 @@ public class GarbageDbHelper extends BaseDbHelper {
 
 
     public void addMessage(SimpleMessage message) {
+        addMessage(message.getAddress(), message.getBody(), message.getDateSend());
+    }
+
+    public void addMessage(String address, String body, long dateSend) {
         SQLiteDatabase db = getDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_ADDRESS, message.getAddress());
-        cv.put(COLUMN_BODY, message.getBody());
-        cv.put(COLUMN_DATE_SEND, message.getDateSend());
-        if (message.getId() > 0) {
-            cv.put(COLUMN_ID, message.getId());
-        }
+        cv.put(COLUMN_ADDRESS, address);
+        cv.put(COLUMN_BODY, body);
+        cv.put(COLUMN_DATE_SEND, dateSend);
 
         db.insert(TABLE_NAME, COLUMN_ID, cv);
     }

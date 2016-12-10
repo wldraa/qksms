@@ -72,14 +72,18 @@ public class GarbageFragment extends QKFragment implements RecyclerCursorAdapter
     public void onItemClick(GarbageAdapter.SimpleMessage message, View view) {
         switch (view.getId()) {
             case R.id.garbage_root:
-                GarbageViewHolder holder = new GarbageViewHolder(mContext, view);
-                message.setVisible(!message.getVisible());
-                if (message.getVisible()) {
-                    holder.body.setMaxLines(10);
-                    holder.buttons.setVisibility(View.VISIBLE);
-                } else {
-                    holder.body.setMaxLines(2);
-                    holder.buttons.setVisibility(View.GONE);
+                GarbageViewHolder holder;
+                for (int i = 0 ; i < mAdapter.getItemCount() ; i++) {
+                    holder = (GarbageViewHolder) mGarbageList.findViewHolderForAdapterPosition(i);
+                    if (holder.mData == message && !message.getVisible()) {
+                        holder.mData.setVisible(true);
+                        holder.body.setMaxLines(10);
+                        holder.buttons.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.mData.setVisible(false);
+                        holder.body.setMaxLines(2);
+                        holder.buttons.setVisibility(View.GONE);
+                    }
                 }
                 break;
             case R.id.markBlack:

@@ -46,7 +46,7 @@ public class SimpleMessage {
     }
 
     public String getAddress() {
-        return address;
+        return address.replace(" ", "");
     }
 
     public void setAddress(String address) {

@@ -47,6 +47,7 @@ import com.moez.QKSMS.common.ConversationPrefsHelper;
 import com.moez.QKSMS.common.DialogHelper;
 import com.moez.QKSMS.common.LiveViewManager;
 import com.moez.QKSMS.common.QKPreferences;
+import com.moez.QKSMS.common.dbhelper.GarbageDbHelper;
 import com.moez.QKSMS.common.utils.KeyboardUtils;
 import com.moez.QKSMS.common.utils.MessageUtils;
 import com.moez.QKSMS.common.vcard.ContactOperations;
@@ -112,6 +113,8 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
     private static final int MENU_PREFERENCES = 31;
     private static final int MENU_GROUP_PARTICIPANTS = 32;
 
+    private static final int MENU_MARK_GARBAGE = 33;
+
     private boolean mIsSmsEnabled;
 
     private Cursor mCursor;
@@ -128,6 +131,8 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
     private ComposeView mComposeView;
     private ConversationPrefsHelper mConversationPrefs;
     private ConversationDetailsDialog mConversationDetailsDialog;
+
+    private GarbageDbHelper mGarbageDbHelper;
 
     private int mSavedScrollPosition = -1;  // we save the ListView's scroll position in onPause(),
     // so we can remember it after re-entering the activity.
@@ -195,6 +200,7 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
         }
 
         mBackgroundQueryHandler = new BackgroundQueryHandler(mContext.getContentResolver());
+        mGarbageDbHelper = new GarbageDbHelper(mContext);
     }
 
     @Override
@@ -402,6 +408,10 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
 
         if (messageItem.mDeliveryStatus != MessageItem.DeliveryStatus.NONE || messageItem.mReadReport) {
             dialog.addMenuItem(R.string.view_delivery_report, MENU_DELIVERY_REPORT);
+        }
+
+        if (!messageItem.isMe() && messageItem.isSms()) {
+            dialog.addMenuItem(R.string.menu_mark_garbage, MENU_MARK_GARBAGE);
         }
 
         if (mIsSmsEnabled) {
@@ -759,6 +769,15 @@ public class MessageListFragment extends QKFragment implements ActivityLauncher,
                 case MENU_UNLOCK_MESSAGE:
                     MessageUtils.lockMessage(mContext, mMsgItem, false);
                     break;
+
+                case MENU_MARK_GARBAGE:
+                    if (mMsgItem.isSms() && !mMsgItem.isMe()) {
+                        mGarbageDbHelper.addMessage(mMsgItem.mAddress, mMsgItem.mBody, mMsgItem.mDate);
+                        new Message(mContext, mMsgItem.mMessageUri).delete();
+                        mAdapter.notifyItemMoved(mMsgItem.getBoxId(), mMsgItem.getBoxId());
+                    }
+                    break;
+
             }
         }
     }

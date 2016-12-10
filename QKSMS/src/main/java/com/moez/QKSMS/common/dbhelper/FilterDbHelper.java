@@ -72,7 +72,7 @@ public class FilterDbHelper extends BaseDbHelper {
     public void addFilter(String name, int type, int contentType) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_NAME, name);
-        cv.put(COLUMN_CONTENT, GarbageUtils.complieFilter(name, contentType));
+        cv.put(COLUMN_CONTENT, GarbageUtils.compileFilter(name, type, contentType));
         cv.put(COLUMN_FILTER_TYPE, type);
         SQLiteDatabase db = getDatabase();
         db.insert(TABLE_NAME, COLUMN_ID, cv);
