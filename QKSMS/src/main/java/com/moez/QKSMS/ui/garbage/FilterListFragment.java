@@ -2,7 +2,10 @@ package com.moez.QKSMS.ui.garbage;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +20,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.moez.QKSMS.R;
 import com.moez.QKSMS.common.dbhelper.FilterDbHelper;
 import com.moez.QKSMS.common.utils.ColorUtils;
+import com.moez.QKSMS.common.utils.FileUtils;
 import com.moez.QKSMS.common.utils.GarbageUtils;
 import com.moez.QKSMS.data.Filter;
 import com.moez.QKSMS.ui.ThemeManager;
@@ -25,6 +29,15 @@ import com.moez.QKSMS.ui.base.RecyclerCursorAdapter;
 import com.moez.QKSMS.ui.dialog.QKDialog;
 import com.moez.QKSMS.ui.importer.ContactImporterActivity;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.Buffer;
 import java.util.regex.Pattern;
 
 import butterknife.Bind;
@@ -104,6 +117,7 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
             if (mFilterType == FilterDbHelper.TYPE_WHITE_LIST || mFilterType == FilterDbHelper.TYPE_BLACK_LIST) {
                 dialog.addMenuItem("通讯录导入", MENU_FROM_CONTACT);
             }
+            dialog.addMenuItem("文件导入", MENU_FROM_FILE);
             dialog.buildMenu(this);
             dialog.show();
         } else {
@@ -154,8 +168,16 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
             case MENU_ADD_REGEX:
                 mAddType = l;
                 launchInput(null);
+                break;
             case MENU_FROM_CONTACT:
                 mContext.startActivityForResult(ContactImporterActivity.class, MENU_FROM_CONTACT);
+                break;
+            case MENU_FROM_FILE:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("text/plain");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                mContext.startActivityForResult(intent, MENU_FROM_FILE);
+                break;
         }
     }
 
@@ -170,6 +192,29 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
                         mFilterDbHelper.addFilter(number.replace(" ", ""), mFilterType);
                     }
                     dataChanged();
+                case MENU_FROM_FILE:
+                    Uri uri = data.getData();
+                    String path = FileUtils.getRealPathByUri(mContext, uri);
+                    try {
+                        FileInputStream inputStream = new FileInputStream(path);
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                        String str;
+                        int success = 0;
+                        int failure = 0;
+                        while ((str = reader.readLine()) != null) {
+                            try {
+                                Pattern.compile(str);
+                                mFilterDbHelper.addFilter(str, mFilterType, GarbageUtils.CONTENT_REGEX);
+                                success++;
+                            } catch (Exception e) {
+                                failure++;
+                            }
+                        }
+                        Toast.makeText(mContext, "导入成功 " + success + "条\n导入失败" + failure + "条", Toast.LENGTH_LONG).show();
+                        dataChanged();
+                    } catch (Exception e) {
+                        Toast.makeText(mContext, "文件错误，导入失败", Toast.LENGTH_SHORT).show();
+                    }
             }
         }
     }
