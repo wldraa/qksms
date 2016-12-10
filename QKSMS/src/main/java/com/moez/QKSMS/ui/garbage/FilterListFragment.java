@@ -1,10 +1,11 @@
 package com.moez.QKSMS.ui.garbage;
 
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,8 @@ import com.moez.QKSMS.ui.ThemeManager;
 import com.moez.QKSMS.ui.base.QKFragment;
 import com.moez.QKSMS.ui.base.RecyclerCursorAdapter;
 import com.moez.QKSMS.ui.dialog.QKDialog;
+import com.moez.QKSMS.ui.importer.ContactImporterActivity;
 
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import butterknife.Bind;
@@ -49,7 +50,7 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
     private static final int MENU_ADD_SIMPLE = 2;
     private static final int MENU_ADD_REGEX = 3;
     private static final int MENU_FROM_CONTACT = 4;
-    private static final int MENU_FROM_MESSAGE = 5;
+    private static final int MENU_FROM_FILE = 5;
 
     private long mAddType;
 
@@ -100,8 +101,9 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
             dialog.addMenuItem("添加普通文本", MENU_ADD_PLAIN);
             dialog.addMenuItem("添加简单匹配", MENU_ADD_SIMPLE);
             dialog.addMenuItem("添加正则匹配", MENU_ADD_REGEX);
-//            dialog.addMenuItem("通讯录导入", MENU_FROM_CONTACT);
-//            dialog.addMenuItem("信息列表导入", MENU_FROM_MESSAGE);
+            if (mFilterType == FilterDbHelper.TYPE_WHITE_LIST || mFilterType == FilterDbHelper.TYPE_BLACK_LIST) {
+                dialog.addMenuItem("通讯录导入", MENU_FROM_CONTACT);
+            }
             dialog.buildMenu(this);
             dialog.show();
         } else {
@@ -152,6 +154,23 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
             case MENU_ADD_REGEX:
                 mAddType = l;
                 launchInput(null);
+            case MENU_FROM_CONTACT:
+                mContext.startActivityForResult(ContactImporterActivity.class, MENU_FROM_CONTACT);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "result received!");
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case MENU_FROM_CONTACT:
+                    String[] numbers = data.getStringArrayExtra("numbers");
+                    for (String number : numbers) {
+                        mFilterDbHelper.addFilter(number.replace(" ", ""), mFilterType);
+                    }
+                    dataChanged();
+            }
         }
     }
 
@@ -165,5 +184,9 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
                 .setPositiveButton("确定", this)
                 .setNegativeButton("取消", null)
                 .show();
+    }
+
+    private void dataChanged() {
+        mAdapter.changeCursor(mFilterDbHelper.getCursorByFilterType(mFilterType));
     }
 }

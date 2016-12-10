@@ -280,6 +280,11 @@ public abstract class QKActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startActivityForResult(Class<?> cls, int requestCode) {
+        Intent intent = new Intent(this, cls);
+        startActivityForResult(intent, requestCode);
+    }
+
     public boolean isScreenOn() {
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {

@@ -28,6 +28,8 @@ public class FilterDbHelper extends BaseDbHelper {
     public static final int TYPE_BLACK_LIST = 2;
     public static final int TYPE_KEYWORD = 3;
 
+    public static final String[] TYPE_NAME_MAP = new String[]{null, "白名单","黑名单", "关键词"};
+
     public FilterDbHelper(Context mContext) {
         super(mContext);
     }

@@ -17,27 +17,35 @@ import com.moez.QKSMS.ui.base.QKActivity;
 public class FilterSettingActivity extends QKActivity {
     final public static String TAG = "FilterSettingActivity";
 
+    private FilterListFragment mFilterListFragment;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
         int filterType = intent.getIntExtra("filterType", FilterDbHelper.TYPE_BLACK_LIST);
+        String title = intent.getStringExtra("title");
 
         setContentView(R.layout.activity_filter_setting);
         FragmentManager fm = getFragmentManager();
 
-        FilterListFragment filterListFragment = (FilterListFragment) fm.findFragmentByTag(FilterSettingActivity.TAG);
-        if (null == filterListFragment) {
-            filterListFragment = new FilterListFragment();
+        mFilterListFragment = (FilterListFragment) fm.findFragmentByTag(FilterSettingActivity.TAG);
+        if (null == mFilterListFragment) {
+            mFilterListFragment = new FilterListFragment();
         }
-        filterListFragment.setFilterType(filterType);
+        mFilterListFragment.setFilterType(filterType);
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.body_fragment, filterListFragment, FilterSettingActivity.TAG);
+        ft.replace(R.id.body_fragment, mFilterListFragment, FilterSettingActivity.TAG);
         ft.commit();
 
-        setTitle(R.string.pref_garbage);
+        setTitle(title);
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mFilterListFragment.onActivityResult(requestCode, resultCode, data);
     }
 
 

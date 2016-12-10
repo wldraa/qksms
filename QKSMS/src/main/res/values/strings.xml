@@ -64,6 +64,8 @@
   <string name="menu_search">搜索</string>
   <!--Search option in menu-->
   <string name="menu_clear">清空垃圾短信</string>
+  <string name="menu_select_all">全选</string>
+  <string name="menu_reverse_select">反选</string>
   <!--Show full conversation in QuickReply-->
   <string name="menu_show_all">显示所有信息</string>
   <!--Show only unread messages in QuickReply-->

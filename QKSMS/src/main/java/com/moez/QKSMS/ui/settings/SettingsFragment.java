@@ -696,6 +696,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private void startFilterSettingActivity(int filterType) {
         Intent intent = new Intent(mContext, FilterSettingActivity.class);
         intent.putExtra("filterType", filterType);
+        intent.putExtra("title", FilterDbHelper.TYPE_NAME_MAP[filterType]);
         startActivity(intent);
     }
 
