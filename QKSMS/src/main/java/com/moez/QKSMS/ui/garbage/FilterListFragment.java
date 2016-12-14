@@ -188,10 +188,13 @@ public class FilterListFragment extends QKFragment implements View.OnClickListen
             switch (requestCode) {
                 case MENU_FROM_CONTACT:
                     String[] numbers = data.getStringArrayExtra("numbers");
-                    for (String number : numbers) {
-                        mFilterDbHelper.addFilter(number.replace(" ", ""), mFilterType);
+                    if (numbers != null) {
+                        for (String number : numbers) {
+                            mFilterDbHelper.addFilter(number.replace(" ", ""), mFilterType);
+                        }
                     }
                     dataChanged();
+                    break;
                 case MENU_FROM_FILE:
                     Uri uri = data.getData();
                     String path = FileUtils.getRealPathByUri(mContext, uri);

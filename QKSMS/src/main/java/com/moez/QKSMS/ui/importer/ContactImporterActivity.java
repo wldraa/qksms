@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,16 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.moez.QKSMS.R;
-import com.moez.QKSMS.common.LiveViewManager;
-import com.moez.QKSMS.enums.QKPreference;
-import com.moez.QKSMS.ui.ThemeManager;
 import com.moez.QKSMS.ui.base.QKActivity;
 
 import java.util.ArrayList;
@@ -37,6 +29,8 @@ public class ContactImporterActivity extends QKActivity implements AdapterView.O
     public static final String TAG = "ContactImporterActivity";
 
     private ContactImporterAdapter mAdapter;
+
+    private ListView mListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,19 +61,18 @@ public class ContactImporterActivity extends QKActivity implements AdapterView.O
 
         mAdapter = new ContactImporterAdapter(this, list, R.layout.list_item_contact_importer, new String[]{"name", "number"}, new int[]{R.id.contact_list_name, R.id.contact_list_number});
 
-        ListView listView = (ListView) findViewById(R.id.contact_importer_listview);
-        listView.setBackgroundColor(Color.WHITE);
-        listView.setOnItemClickListener(this);
+        mListView = (ListView) findViewById(R.id.contact_importer_listview);
+        mListView.setBackgroundColor(Color.WHITE);
+        mListView.setOnItemClickListener(this);
 
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         setTitle("从通讯录中导入");
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        CheckBox cb = mAdapter.getItemView(i);
-        cb.setChecked(!cb.isChecked());
+        mAdapter.check(view, i);
     }
 
     @Override
@@ -96,16 +89,10 @@ public class ContactImporterActivity extends QKActivity implements AdapterView.O
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch (menu.getItemId()) {
             case R.id.menu_select_all:
-                for (int i = 0 ; i < mAdapter.getCount() ; i++) {
-                    CheckBox cb = mAdapter.getItemView(i);
-                    cb.setChecked(true);
-                }
+                mAdapter.checkAll(mListView.getFirstVisiblePosition(), mListView.getLastVisiblePosition());
                 return true;
             case R.id.menu_reverse_select:
-                for (int i = 0 ; i < mAdapter.getCount() ; i++) {
-                    CheckBox cb = mAdapter.getItemView(i);
-                    cb.setChecked(!cb.isChecked());
-                }
+                mAdapter.reveerseCheck(mListView.getFirstVisiblePosition(), mListView.getLastVisiblePosition());
                 return true;
             case R.id.menu_done:
                 Intent result = getIntent();

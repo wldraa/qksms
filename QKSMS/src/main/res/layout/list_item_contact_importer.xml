@@ -16,19 +16,6 @@
         android:layout_margin="12dp"
         android:padding="4dp" />
 
-    <com.moez.QKSMS.ui.view.RobotoTextView
-        android:id="@+id/contact_list_contact_initial"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="12dp"
-        android:gravity="center"
-        android:padding="4dp"
-        android:textColor="@color/white_pure"
-        android:textSize="22dp"
-        app:typeface="roboto_light" />
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,6 +32,16 @@
             android:singleLine="true"
             app:type="primary" />
 
+        <com.moez.QKSMS.ui.view.QKTextView
+            android:id="@+id/contact_list_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/contact_list_name"
+            android:lines="1"
+            android:singleLine="true"
+            app:type="secondary" />
+
         <CheckBox
             android:id="@+id/contact_list_selected"
             android:layout_width="wrap_content"
@@ -55,16 +52,6 @@
             android:clickable="false"
             android:focusableInTouchMode="false"
             android:paddingLeft="16dp" />
-
-        <com.moez.QKSMS.ui.view.QKTextView
-            android:id="@+id/contact_list_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/contact_list_name"
-            android:lines="1"
-            android:singleLine="true"
-            app:type="secondary" />
 
     </RelativeLayout>
 

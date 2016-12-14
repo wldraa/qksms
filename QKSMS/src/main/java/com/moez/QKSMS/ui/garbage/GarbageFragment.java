@@ -75,14 +75,16 @@ public class GarbageFragment extends QKFragment implements RecyclerCursorAdapter
                 GarbageViewHolder holder;
                 for (int i = 0 ; i < mAdapter.getItemCount() ; i++) {
                     holder = (GarbageViewHolder) mGarbageList.findViewHolderForAdapterPosition(i);
-                    if (holder.mData == message && !message.getVisible()) {
-                        holder.mData.setVisible(true);
-                        holder.body.setMaxLines(10);
-                        holder.buttons.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.mData.setVisible(false);
-                        holder.body.setMaxLines(2);
-                        holder.buttons.setVisibility(View.GONE);
+                    if (holder != null) {
+                        if (holder.mData == message && !message.getVisible()) {
+                            holder.mData.setVisible(true);
+                            holder.body.setMaxLines(10);
+                            holder.buttons.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.mData.setVisible(false);
+                            holder.body.setMaxLines(2);
+                            holder.buttons.setVisibility(View.GONE);
+                        }
                     }
                 }
                 break;

@@ -160,6 +160,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public static final String GOOGLE_PLUS = "pref_key_google_plus";
     public static final String GITHUB = "pref_key_github";
     public static final String CROWDIN = "pref_key_crowdin";
+    public static final String GARBAGE_ENABLED = "pref_key_garbage";
     public static final String WHITE_LIST = "pref_key_white_list";
     public static final String BLACK_LIST = "pref_key_black_list";
     public static final String KEYWORD = "pref_key_keyword";

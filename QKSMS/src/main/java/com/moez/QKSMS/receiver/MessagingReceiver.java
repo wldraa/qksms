@@ -108,31 +108,22 @@ public class MessagingReceiver extends BroadcastReceiver {
 
     private void insertMessageAndNotify() {
         // 在短信入库之前判断是否应该拦截
-        SimpleMessage simpleMessage = new SimpleMessage(mBody, mAddress, mDate);
-        FilterDbHelper filterDbHelper = new FilterDbHelper(mContext);
-        if (GarbageUtils.isGarbageMessage(filterDbHelper, simpleMessage)) {
-            GarbageDbHelper garbageDbHelper = new GarbageDbHelper(mContext);
-            garbageDbHelper.addMessage(simpleMessage);
+        if (mPrefs.getBoolean(SettingsFragment.GARBAGE_ENABLED, false)) {       // 是否开启该功能
+            SimpleMessage simpleMessage = new SimpleMessage(mBody, mAddress, mDate);
+            FilterDbHelper filterDbHelper = new FilterDbHelper(mContext);
+            if (GarbageUtils.isGarbageMessage(filterDbHelper, simpleMessage)) {     // 是否为垃圾短信
+                GarbageDbHelper garbageDbHelper = new GarbageDbHelper(mContext);
+                garbageDbHelper.addMessage(simpleMessage);
 
-            long contactId = ContactHelper.getId(mContext, mAddress);
-            if (contactId > 0) {
-                // 这里进行提醒新垃圾信息到来
-                android.app.NotificationManager notificationManager = (android.app.NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
-                builder.setContentTitle("QKSMS");
-                builder.setContentText("收到通讯录垃圾信息");
-                builder.setSmallIcon(R.mipmap.ic_launcher);
-                builder.setAutoCancel(true);
-                Intent intent = new Intent(mContext, GarbageActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
-                builder.setContentIntent(pendingIntent);
-                notificationManager.notify(0, builder.build());
-            } else {
-                Toast.makeText(mContext, "新垃圾信息到来（未知号码）", Toast.LENGTH_LONG).show();
+                long contactId = ContactHelper.getId(mContext, mAddress);    // 在通讯录中查找该发件人
+                if (contactId > 0) {
+                    launchNotification();
+                } else {
+                    Toast.makeText(mContext, "新垃圾信息到来（未知号码）", Toast.LENGTH_SHORT).show();
+                }
+                return;
             }
-            return;
         }
-
         mUri = SmsHelper.addMessageToInbox(mContext, mAddress, mBody, mDate);
 
         Message message = new Message(mContext, mUri);
@@ -168,5 +159,18 @@ public class MessagingReceiver extends BroadcastReceiver {
             wakeLock.acquire();
             wakeLock.release();
         }
+    }
+
+    private void launchNotification() {
+        android.app.NotificationManager notificationManager = (android.app.NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        builder.setContentTitle("QKSMS");
+        builder.setContentText("收到通讯录垃圾信息");
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setAutoCancel(true);
+        Intent intent = new Intent(mContext, GarbageActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+        builder.setContentIntent(pendingIntent);
+        notificationManager.notify(0, builder.build());
     }
 }
